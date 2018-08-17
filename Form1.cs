@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Net;
+using System.Web;
 //using System.Diagnostics.Stopwatch;
 //using commonTypes;
 
@@ -202,12 +203,13 @@ namespace TarEmu3
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            /*
             using (var client = new WebClient())
             {
-                client.DownloadFile("https://stackoverflow.com/questions/307688/how-to-download-a-file-from-a-url-in-c", "aaaaa.html");
+                client.Headers[HttpRequestHeader.KeepAlive] = "True";
+                client.Headers[HttpRequestHeader.UserAgent] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0";
+                client.DownloadFile("https://api.github.com/repos/DarkPatrick/Target_Emulator/releases/latest", "latest_version.json");
+                //TODO open and seek for https://github.com/DarkPatrick/Target_Emulator/releases/download/....
             }
-            */
 
             LoadAllSettings();
 
