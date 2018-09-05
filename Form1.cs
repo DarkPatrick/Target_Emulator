@@ -77,7 +77,7 @@ namespace TarEmu3
 
         public void UpdateProg(WebClient client, string new_ver_cont)
         {
-            if (MessageBox.Show("Доступна новая версия программы. Обновить сейчас?", "Обновление программы", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
+            if (MessageBox.Show("Доступна новая версия программы.\nОбновить сейчас?", "Обновление программы", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
             {
                 string download_url = "\"browser_download_url\": \"";
                 var idx1 = new_ver_cont.IndexOf(download_url);
@@ -1395,6 +1395,11 @@ namespace TarEmu3
 
                 this.Text = old_title;
             }
+        }
+
+        private void AboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Target Emulator\nVersion: " + latest_version, "Info", MessageBoxButtons.OK);
         }
     }
 }

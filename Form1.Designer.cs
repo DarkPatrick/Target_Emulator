@@ -42,6 +42,7 @@
             this.editExistinginiFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.convertOldTarEmuiniToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.oldTarEmuiniToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.bintxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exeDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.savedFilesDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -60,6 +61,7 @@
             this.save_setup_bt = new System.Windows.Forms.ToolStripMenuItem();
             this.load_setup_bt = new System.Windows.Forms.ToolStripMenuItem();
             this.receivedDataFileNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.autoTextWriteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.windowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pauseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -89,8 +91,7 @@
             this.port_check_timer = new System.Windows.Forms.Timer(this.components);
             this.editing_timer = new System.Windows.Forms.Timer(this.components);
             this.stat_timer = new System.Windows.Forms.Timer(this.components);
-            this.autoTextWriteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.bintxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.main_menu.SuspendLayout();
             this.main_tool_strip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.rec_data_grid)).BeginInit();
@@ -205,6 +206,14 @@
             this.oldTarEmuiniToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
             this.oldTarEmuiniToolStripMenuItem.Text = "&Old TarEmu .ini";
             this.oldTarEmuiniToolStripMenuItem.Click += new System.EventHandler(this.OldTarEmuiniToolStripMenuItem_Click);
+            // 
+            // bintxtToolStripMenuItem
+            // 
+            this.bintxtToolStripMenuItem.Enabled = false;
+            this.bintxtToolStripMenuItem.Name = "bintxtToolStripMenuItem";
+            this.bintxtToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.bintxtToolStripMenuItem.Text = ".bin -> .txt";
+            this.bintxtToolStripMenuItem.Click += new System.EventHandler(this.BintxtToolStripMenuItem_Click);
             // 
             // viewToolStripMenuItem
             // 
@@ -342,6 +351,13 @@
             this.receivedDataFileNameToolStripMenuItem.Text = "&Received data file name";
             this.receivedDataFileNameToolStripMenuItem.Click += new System.EventHandler(this.ReceivedDataFileNameToolStripMenuItem_Click);
             // 
+            // autoTextWriteToolStripMenuItem
+            // 
+            this.autoTextWriteToolStripMenuItem.CheckOnClick = true;
+            this.autoTextWriteToolStripMenuItem.Name = "autoTextWriteToolStripMenuItem";
+            this.autoTextWriteToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
+            this.autoTextWriteToolStripMenuItem.Text = "&Auto text write";
+            // 
             // windowToolStripMenuItem
             // 
             this.windowToolStripMenuItem.Name = "windowToolStripMenuItem";
@@ -350,6 +366,8 @@
             // 
             // helpToolStripMenuItem
             // 
+            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.aboutToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "&Help";
@@ -566,20 +584,12 @@
             this.stat_timer.Interval = 500;
             this.stat_timer.Tick += new System.EventHandler(this.Stat_timer_Tick);
             // 
-            // autoTextWriteToolStripMenuItem
+            // aboutToolStripMenuItem
             // 
-            this.autoTextWriteToolStripMenuItem.CheckOnClick = true;
-            this.autoTextWriteToolStripMenuItem.Name = "autoTextWriteToolStripMenuItem";
-            this.autoTextWriteToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
-            this.autoTextWriteToolStripMenuItem.Text = "&Auto text write";
-            // 
-            // bintxtToolStripMenuItem
-            // 
-            this.bintxtToolStripMenuItem.Enabled = false;
-            this.bintxtToolStripMenuItem.Name = "bintxtToolStripMenuItem";
-            this.bintxtToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
-            this.bintxtToolStripMenuItem.Text = ".bin -> .txt";
-            this.bintxtToolStripMenuItem.Click += new System.EventHandler(this.BintxtToolStripMenuItem_Click);
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.aboutToolStripMenuItem.Text = "&About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.AboutToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -671,6 +681,7 @@
         private System.Windows.Forms.Timer stat_timer;
         private System.Windows.Forms.ToolStripMenuItem autoTextWriteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem bintxtToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
     }
 }
 
