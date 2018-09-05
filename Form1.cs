@@ -67,9 +67,37 @@ namespace TarEmu3
         static System.Windows.Forms.ToolStripMenuItem[] recent_file_menu_item = new System.Windows.Forms.ToolStripMenuItem[10];
         static SimpleStats simple_stats;
 
+        static string latest_version = "2.0.0";
+        static string UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0";
+
         public MainForm()
         {
             InitializeComponent();
+        }
+
+        public void UpdateProg(WebClient client, string new_ver_cont)
+        {
+            if (MessageBox.Show("Доступна новая версия программы. Обновить сейчас?", "Обновление программы", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
+            {
+                string download_url = "\"browser_download_url\": \"";
+                var idx1 = new_ver_cont.IndexOf(download_url);
+                var idx2 = new_ver_cont.IndexOf("\"", idx1 + download_url.Length);
+                download_url = new_ver_cont.Substring(idx1 + download_url.Length, idx2 - (idx1 + download_url.Length));
+                client.DownloadFile(download_url, "new_tar_emu.exe");
+
+                var process_name = System.AppDomain.CurrentDomain.FriendlyName;
+                var current_dir = AppDomain.CurrentDomain.BaseDirectory;
+
+                System.Diagnostics.Process process = new System.Diagnostics.Process();
+                System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo
+                {
+                    WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
+                    FileName = "cmd.exe",
+                    Arguments = "/C taskkill /f /im " + process_name + " && del /f /q " + current_dir + process_name + " && rename " + current_dir + "new_tar_emu.exe " + process_name + " && start " + process_name
+                };
+                process.StartInfo = startInfo;
+                process.Start();
+            }
         }
 
         public void LoadAllSettings()
@@ -206,9 +234,22 @@ namespace TarEmu3
             using (var client = new WebClient())
             {
                 client.Headers[HttpRequestHeader.KeepAlive] = "True";
-                client.Headers[HttpRequestHeader.UserAgent] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0";
+                client.Headers[HttpRequestHeader.UserAgent] = UserAgent;//"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0";
                 client.DownloadFile("https://api.github.com/repos/DarkPatrick/Target_Emulator/releases/latest", "latest_version.json");
-                //TODO open and seek for https://github.com/DarkPatrick/Target_Emulator/releases/download/....
+
+                System.IO.StreamReader sr = new System.IO.StreamReader("latest_version.json");
+                string new_ver_cont = sr.ReadToEnd();
+                sr.Close();
+                //aa
+                // compare "tag_name":with version
+                if (new_ver_cont.Contains("\"tag_name\": \"" + latest_version + "\""))
+                {
+                    //всё ок. версии совпали
+                }
+                else
+                {
+                    UpdateProg(client, new_ver_cont);
+                }
             }
 
             LoadAllSettings();
