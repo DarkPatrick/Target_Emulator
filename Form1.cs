@@ -67,7 +67,7 @@ namespace TarEmu3
         static System.Windows.Forms.ToolStripMenuItem[] recent_file_menu_item = new System.Windows.Forms.ToolStripMenuItem[10];
         static SimpleStats simple_stats;
 
-        static string latest_version = "2.0.0";
+        static string latest_version = "2.0.1";
         static string UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0";
 
         public MainForm()
@@ -231,25 +231,31 @@ namespace TarEmu3
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            using (var client = new WebClient())
+            try
             {
-                client.Headers[HttpRequestHeader.KeepAlive] = "True";
-                client.Headers[HttpRequestHeader.UserAgent] = UserAgent;//"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0";
-                client.DownloadFile("https://api.github.com/repos/DarkPatrick/Target_Emulator/releases/latest", "latest_version.json");
+                using (var client = new WebClient())
+                {
+                    client.Headers[HttpRequestHeader.KeepAlive] = "True";
+                    client.Headers[HttpRequestHeader.UserAgent] = UserAgent;//"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0";
+                    client.DownloadFile("https://api.github.com/repos/DarkPatrick/Target_Emulator/releases/latest", "latest_version.json");
 
-                System.IO.StreamReader sr = new System.IO.StreamReader("latest_version.json");
-                string new_ver_cont = sr.ReadToEnd();
-                sr.Close();
-                //aa
-                // compare "tag_name":with version
-                if (new_ver_cont.Contains("\"tag_name\": \"" + latest_version + "\""))
-                {
-                    //всё ок. версии совпали
+                    System.IO.StreamReader sr = new System.IO.StreamReader("latest_version.json");
+                    string new_ver_cont = sr.ReadToEnd();
+                    sr.Close();
+                    //aa
+                    // compare "tag_name":with version
+                    if (new_ver_cont.Contains("\"tag_name\": \"" + latest_version + "\""))
+                    {
+                        //всё ок. версии совпали
+                    }
+                    else
+                    {
+                        UpdateProg(client, new_ver_cont);
+                    }
                 }
-                else
-                {
-                    UpdateProg(client, new_ver_cont);
-                }
+            }
+            catch
+            {
             }
 
             LoadAllSettings();
