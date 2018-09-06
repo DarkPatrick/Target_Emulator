@@ -67,7 +67,7 @@ namespace TarEmu3
         static System.Windows.Forms.ToolStripMenuItem[] recent_file_menu_item = new System.Windows.Forms.ToolStripMenuItem[10];
         static SimpleStats simple_stats;
 
-        static string latest_version = "2.0.2";
+        static string latest_version = "2.0.3";
         static string UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0";
 
         public MainForm()
@@ -77,27 +77,30 @@ namespace TarEmu3
 
         public void UpdateProg(WebClient client, string new_ver_cont)
         {
-            if (MessageBox.Show("Доступна новая версия программы.\nОбновить сейчас?", "Обновление программы", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
+            if (checkUpdatesOnStartupToolStripMenuItem.Checked)
             {
-                string download_url = "\"browser_download_url\": \"";
-                var idx1 = new_ver_cont.IndexOf(download_url);
-                var idx2 = new_ver_cont.IndexOf("\"", idx1 + download_url.Length);
-                download_url = new_ver_cont.Substring(idx1 + download_url.Length, idx2 - (idx1 + download_url.Length));
-                client.DownloadFile(download_url, "new_tar_emu.exe");
-
-                var process_name = System.AppDomain.CurrentDomain.FriendlyName;
-                var current_dir = AppDomain.CurrentDomain.BaseDirectory;
-
-                System.Diagnostics.Process process = new System.Diagnostics.Process();
-                System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo
+                if (MessageBox.Show("Доступна новая версия программы.\nОбновить сейчас?", "Обновление приложения", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
                 {
-                    WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
-                    FileName = "cmd.exe",
-                    //Arguments = "/C taskkill /f /im " + process_name + " && del /f /q \"" + current_dir + process_name + "\" && rename \"" + current_dir + "new_tar_emu.exe\" " + process_name + " && start \"" + current_dir + process_name + "\""
-                    Arguments = "/C taskkill /f /im " + process_name + " && del /f /q \"" + current_dir + process_name + "\" && rename \"" + current_dir + "new_tar_emu.exe\" " + process_name + " && start " + process_name
-                };
-                process.StartInfo = startInfo;
-                process.Start();
+                    string download_url = "\"browser_download_url\": \"";
+                    var idx1 = new_ver_cont.IndexOf(download_url);
+                    var idx2 = new_ver_cont.IndexOf("\"", idx1 + download_url.Length);
+                    download_url = new_ver_cont.Substring(idx1 + download_url.Length, idx2 - (idx1 + download_url.Length));
+                    client.DownloadFile(download_url, "new_tar_emu.exe");
+
+                    var process_name = System.AppDomain.CurrentDomain.FriendlyName;
+                    var current_dir = AppDomain.CurrentDomain.BaseDirectory;
+
+                    System.Diagnostics.Process process = new System.Diagnostics.Process();
+                    System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo
+                    {
+                        WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
+                        FileName = "cmd.exe",
+                        //Arguments = "/C taskkill /f /im " + process_name + " && del /f /q \"" + current_dir + process_name + "\" && rename \"" + current_dir + "new_tar_emu.exe\" " + process_name + " && start \"" + current_dir + process_name + "\""
+                        Arguments = "/C taskkill /f /im " + process_name + " && del /f /q \"" + current_dir + process_name + "\" && rename \"" + current_dir + "new_tar_emu.exe\" " + process_name + " && start " + process_name
+                    };
+                    process.StartInfo = startInfo;
+                    process.Start();
+                }
             }
         }
 
@@ -166,9 +169,21 @@ namespace TarEmu3
             {
                 var key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("Target Emulator " + SerialPortSetup.app_num.ToString()).OpenSubKey("read_write");
 
-
                 bool.TryParse(key.GetValue("write_txt").ToString(), out bool wr_ch);
                 autoTextWriteToolStripMenuItem.Checked = wr_ch;
+            }
+            catch
+            {
+            }
+
+            try
+            {
+                var key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("Target Emulator " + SerialPortSetup.app_num.ToString()).OpenSubKey("on_startup");
+
+                bool.TryParse(key.GetValue("updates").ToString(), out bool wr_ch);
+                checkUpdatesOnStartupToolStripMenuItem.Checked = wr_ch;
+                bool.TryParse(key.GetValue("latest_ini").ToString(), out wr_ch);
+                loadLatestiniFileToolStripMenuItem.Checked = wr_ch;
             }
             catch
             {
@@ -211,6 +226,10 @@ namespace TarEmu3
 
             key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey("Target Emulator " + SerialPortSetup.app_num.ToString()).CreateSubKey("read_write");
             key.SetValue("write_txt", autoTextWriteToolStripMenuItem.Checked);
+
+            key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey("Target Emulator " + SerialPortSetup.app_num.ToString()).CreateSubKey("on_startup");
+            key.SetValue("updates", checkUpdatesOnStartupToolStripMenuItem.Checked);
+            key.SetValue("latest_ini", loadLatestiniFileToolStripMenuItem.Checked);
         }
 
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -232,6 +251,8 @@ namespace TarEmu3
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            LoadAllSettings();
+
             try
             {
                 using (var client = new WebClient())
@@ -259,9 +280,16 @@ namespace TarEmu3
             {
             }
 
-            LoadAllSettings();
-
             update_timer.Start();
+
+            if ((loadLatestiniFileToolStripMenuItem.Checked) && (recent_file_menu_item[0].Text != ""))
+            {
+                open_file_dialog.FileName = recent_file_menu_item[0].Text;
+                System.IO.StreamReader sr = new System.IO.StreamReader(open_file_dialog.FileName);
+                current_ini_content = sr.ReadToEnd();
+                sr.Close();
+                GetIniFile(current_ini_content);
+            }
         }
 
         private void Run_bt_Click(object sender, EventArgs e)
@@ -1401,6 +1429,16 @@ namespace TarEmu3
         private void AboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Target Emulator\nVersion: " + latest_version, "Info", MessageBoxButtons.OK);
+        }
+
+        private void CheckUpdatesOnStartupToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            checkUpdatesOnStartupToolStripMenuItem.Checked = !checkUpdatesOnStartupToolStripMenuItem.Checked;
+        }
+
+        private void LoadLatestiniFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            loadLatestiniFileToolStripMenuItem.Checked = !loadLatestiniFileToolStripMenuItem.Checked;
         }
     }
 }

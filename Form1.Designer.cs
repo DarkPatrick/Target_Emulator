@@ -62,8 +62,11 @@
             this.load_setup_bt = new System.Windows.Forms.ToolStripMenuItem();
             this.receivedDataFileNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.autoTextWriteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.checkUpdatesOnStartupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadLatestiniFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.windowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pauseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aaaaaaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.main_tool_strip = new System.Windows.Forms.ToolStrip();
@@ -91,7 +94,6 @@
             this.port_check_timer = new System.Windows.Forms.Timer(this.components);
             this.editing_timer = new System.Windows.Forms.Timer(this.components);
             this.stat_timer = new System.Windows.Forms.Timer(this.components);
-            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.main_menu.SuspendLayout();
             this.main_tool_strip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.rec_data_grid)).BeginInit();
@@ -309,7 +311,9 @@
             this.connectionOptionsToolStripMenuItem,
             this.setupDataFileToolStripMenuItem,
             this.receivedDataFileNameToolStripMenuItem,
-            this.autoTextWriteToolStripMenuItem});
+            this.autoTextWriteToolStripMenuItem,
+            this.checkUpdatesOnStartupToolStripMenuItem,
+            this.loadLatestiniFileToolStripMenuItem});
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
             this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.optionsToolStripMenuItem.Text = "&Options";
@@ -317,7 +321,7 @@
             // connectionOptionsToolStripMenuItem
             // 
             this.connectionOptionsToolStripMenuItem.Name = "connectionOptionsToolStripMenuItem";
-            this.connectionOptionsToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
+            this.connectionOptionsToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
             this.connectionOptionsToolStripMenuItem.Text = "&Connection options";
             this.connectionOptionsToolStripMenuItem.Click += new System.EventHandler(this.ConnectionOptionsToolStripMenuItem_Click);
             // 
@@ -327,7 +331,7 @@
             this.save_setup_bt,
             this.load_setup_bt});
             this.setupDataFileToolStripMenuItem.Name = "setupDataFileToolStripMenuItem";
-            this.setupDataFileToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
+            this.setupDataFileToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
             this.setupDataFileToolStripMenuItem.Text = "&Setup paths";
             // 
             // save_setup_bt
@@ -347,7 +351,7 @@
             // receivedDataFileNameToolStripMenuItem
             // 
             this.receivedDataFileNameToolStripMenuItem.Name = "receivedDataFileNameToolStripMenuItem";
-            this.receivedDataFileNameToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
+            this.receivedDataFileNameToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
             this.receivedDataFileNameToolStripMenuItem.Text = "&Received data file name";
             this.receivedDataFileNameToolStripMenuItem.Click += new System.EventHandler(this.ReceivedDataFileNameToolStripMenuItem_Click);
             // 
@@ -355,8 +359,26 @@
             // 
             this.autoTextWriteToolStripMenuItem.CheckOnClick = true;
             this.autoTextWriteToolStripMenuItem.Name = "autoTextWriteToolStripMenuItem";
-            this.autoTextWriteToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
+            this.autoTextWriteToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
             this.autoTextWriteToolStripMenuItem.Text = "&Auto text write";
+            // 
+            // checkUpdatesOnStartupToolStripMenuItem
+            // 
+            this.checkUpdatesOnStartupToolStripMenuItem.Checked = true;
+            this.checkUpdatesOnStartupToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkUpdatesOnStartupToolStripMenuItem.Name = "checkUpdatesOnStartupToolStripMenuItem";
+            this.checkUpdatesOnStartupToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
+            this.checkUpdatesOnStartupToolStripMenuItem.Text = "C&heck updates on startup";
+            this.checkUpdatesOnStartupToolStripMenuItem.Click += new System.EventHandler(this.CheckUpdatesOnStartupToolStripMenuItem_Click);
+            // 
+            // loadLatestiniFileToolStripMenuItem
+            // 
+            this.loadLatestiniFileToolStripMenuItem.Checked = true;
+            this.loadLatestiniFileToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.loadLatestiniFileToolStripMenuItem.Name = "loadLatestiniFileToolStripMenuItem";
+            this.loadLatestiniFileToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
+            this.loadLatestiniFileToolStripMenuItem.Text = "&Load latest .ini file";
+            this.loadLatestiniFileToolStripMenuItem.Click += new System.EventHandler(this.LoadLatestiniFileToolStripMenuItem_Click);
             // 
             // windowToolStripMenuItem
             // 
@@ -371,6 +393,13 @@
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "&Help";
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.aboutToolStripMenuItem.Text = "&About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.AboutToolStripMenuItem_Click);
             // 
             // pauseToolStripMenuItem
             // 
@@ -584,13 +613,6 @@
             this.stat_timer.Interval = 500;
             this.stat_timer.Tick += new System.EventHandler(this.Stat_timer_Tick);
             // 
-            // aboutToolStripMenuItem
-            // 
-            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.aboutToolStripMenuItem.Text = "&About";
-            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.AboutToolStripMenuItem_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -682,6 +704,8 @@
         private System.Windows.Forms.ToolStripMenuItem autoTextWriteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem bintxtToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem checkUpdatesOnStartupToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem loadLatestiniFileToolStripMenuItem;
     }
 }
 
