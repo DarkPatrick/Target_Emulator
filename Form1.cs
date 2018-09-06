@@ -67,7 +67,7 @@ namespace TarEmu3
         static System.Windows.Forms.ToolStripMenuItem[] recent_file_menu_item = new System.Windows.Forms.ToolStripMenuItem[10];
         static SimpleStats simple_stats;
 
-        static string latest_version = "2.0.1";
+        static string latest_version = "2.0.2";
         static string UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0";
 
         public MainForm()
@@ -93,7 +93,8 @@ namespace TarEmu3
                 {
                     WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
                     FileName = "cmd.exe",
-                    Arguments = "/C taskkill /f /im " + process_name + " && del /f /q " + current_dir + process_name + " && rename " + current_dir + "new_tar_emu.exe " + process_name + " && start " + process_name
+                    //Arguments = "/C taskkill /f /im " + process_name + " && del /f /q \"" + current_dir + process_name + "\" && rename \"" + current_dir + "new_tar_emu.exe\" " + process_name + " && start \"" + current_dir + process_name + "\""
+                    Arguments = "/C taskkill /f /im " + process_name + " && del /f /q \"" + current_dir + process_name + "\" && rename \"" + current_dir + "new_tar_emu.exe\" " + process_name + " && start " + process_name
                 };
                 process.StartInfo = startInfo;
                 process.Start();
