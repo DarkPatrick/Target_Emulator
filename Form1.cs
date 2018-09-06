@@ -67,7 +67,7 @@ namespace TarEmu3
         static System.Windows.Forms.ToolStripMenuItem[] recent_file_menu_item = new System.Windows.Forms.ToolStripMenuItem[10];
         static SimpleStats simple_stats;
 
-        static string latest_version = "2.0.3";
+        static string latest_version = "2.0.4";
         static string UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0";
 
         public MainForm()
@@ -96,7 +96,7 @@ namespace TarEmu3
                         WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
                         FileName = "cmd.exe",
                         //Arguments = "/C taskkill /f /im " + process_name + " && del /f /q \"" + current_dir + process_name + "\" && rename \"" + current_dir + "new_tar_emu.exe\" " + process_name + " && start \"" + current_dir + process_name + "\""
-                        Arguments = "/C taskkill /f /im " + process_name + " && del /f /q \"" + current_dir + process_name + "\" && rename \"" + current_dir + "new_tar_emu.exe\" " + process_name + " && start " + process_name
+                        Arguments = "/C taskkill /f /im " + process_name + " && ping -n 2 127.0.0.1 && del /f /q \"" + current_dir + process_name + "\" && ping -n 2 127.0.0.1 && rename \"" + current_dir + "new_tar_emu.exe\" " + process_name + " && ping -n 2 127.0.0.1 && start " + process_name
                     };
                     process.StartInfo = startInfo;
                     process.Start();
@@ -264,6 +264,11 @@ namespace TarEmu3
                     System.IO.StreamReader sr = new System.IO.StreamReader("latest_version.json");
                     string new_ver_cont = sr.ReadToEnd();
                     sr.Close();
+                    sr.Dispose();
+                    if (System.IO.File.Exists("latest_version.json"))
+                    {
+                        System.IO.File.Delete("latest_version.json");
+                    }
                     //aa
                     // compare "tag_name":with version
                     if (new_ver_cont.Contains("\"tag_name\": \"" + latest_version + "\""))
