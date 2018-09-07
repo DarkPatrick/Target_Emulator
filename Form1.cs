@@ -286,14 +286,19 @@ namespace TarEmu3
             }
 
             update_timer.Start();
-
-            if ((loadLatestiniFileToolStripMenuItem.Checked) && (recent_file_menu_item[0].Text != ""))
+            try
             {
-                open_file_dialog.FileName = recent_file_menu_item[0].Text;
-                System.IO.StreamReader sr = new System.IO.StreamReader(open_file_dialog.FileName);
-                current_ini_content = sr.ReadToEnd();
-                sr.Close();
-                GetIniFile(current_ini_content);
+                if ((loadLatestiniFileToolStripMenuItem.Checked) && (recent_file_menu_item[0].Text != ""))
+                {
+                    open_file_dialog.FileName = recent_file_menu_item[0].Text;
+                    System.IO.StreamReader sr = new System.IO.StreamReader(open_file_dialog.FileName);
+                    current_ini_content = sr.ReadToEnd();
+                    sr.Close();
+                    GetIniFile(current_ini_content);
+                }
+            }
+            catch
+            {
             }
         }
 
